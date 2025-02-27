@@ -1,10 +1,10 @@
 from pydantic import BaseModel
 from sqlalchemy import Column, Integer, String, create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, declarative_base
+
 
 # Database setup
-DATABASE_URL = "postgresql://user:password@localhost/dbname"
+DATABASE_URL = "postgresql://krishnakamathdb:Bangalore78@localhost/fitness_tracker_dev"
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()

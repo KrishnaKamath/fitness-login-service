@@ -1,11 +1,11 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 import jwt
 import datetime
 from .models import User, UserCreate, UserLogin, SessionLocal
 
-app = FastAPI()
+router = APIRouter()
 
 # Password hashing setup
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -29,7 +29,7 @@ def get_db():
     finally:
         db.close()
 
-@app.post("/register")
+@router.post("/register")
 def register(user: UserCreate, db: Session = Depends(get_db)):
     existing_user = db.query(User).filter(User.username == user.username).first()
     if existing_user:
@@ -40,7 +40,7 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     db.refresh(new_user)
     return {"message": "User registered successfully"}
 
-@app.post("/login")
+@router.post("/login")
 def login(user: UserLogin, db: Session = Depends(get_db)):
     existing_user = db.query(User).filter(User.username == user.username).first()
     if not existing_user or not verify_password(user.password, existing_user.password_hash):
