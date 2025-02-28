@@ -1,12 +1,15 @@
 from fastapi import FastAPI
 from .auth import router as auth_router
+from .database import engine, Base
 
 
 # Initialize FastAPI app
 app = FastAPI()
 
+Base.metadata.create_all(bind=engine)
+
 # Include the auth router
-app.include_router(auth_router, prefix="/auth")
+app.include_router(auth_router, prefix="/api/v1")
 
 # You can include other routers here as your application grows
 # from .some_other_module import some_other_router
